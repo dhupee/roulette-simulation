@@ -1,24 +1,19 @@
 import random
 import time
+from player import decide
+import matplotlib
 
-# roulette have 0 to 36
-# then first 12(1-12), second 12(13-24), third 12(25-36)
-# then there is 1-18, 19-36
-# Odd number, Even number
-# Red and Black values
-# it means there is 46 types of decision making player can make
+from numba import jit
 
-def decide():
-    '''Get random int from 0 to 36
+# player states
+martingale = False # for Martingale simulation
+anti_martingale = False
+money = 50000 # amount of money player have
+bet = 100 # the money player will bet
+round = 50 # how many round bet will happen
+tendency = 'all' # for bet choice 'behaviour'
 
-    Returns:
-        int: The number it will generate
-    '''
-
-    decision = random.randint(0, 36)
-    
-    return decision
-
+@jit(nopython = True)
 def get_result():
     '''Get random int from 0 to 36
 
@@ -31,9 +26,9 @@ def get_result():
     return result
 
 while True:
-    result = get_result()
-    decision = decide()
-    print(decision)
-    print(result)
+    # result = get_result()
+    bet_type, decision = decide()
+    print(decision,',', bet_type)
+    # print(result)
     print('\n')
-    time.sleep(5) # delay 2 seconds
+    time.sleep(1) # delay 2 seconds
