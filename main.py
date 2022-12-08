@@ -14,21 +14,37 @@ round = 50 # how many round bet will happen
 tendency = 'all' # for bet choice 'behaviour'
 
 @jit(nopython = True)
-def get_result():
+def roll_wheel():
     '''Get random int from 0 to 36
 
     Returns:
         int: The number it will generate
     '''
 
-    result = random.randint(0, 36)
+    roll = random.randint(0, 36)
     
-    return result
+    return roll
 
-while True:
-    # result = get_result()
+win = 0
+lost = 0
+for i in range(50):
+    roll = roll_wheel()
     bet_type, decision = decide()
     print(decision,',', bet_type)
-    # print(result)
-    print('\n')
-    time.sleep(1) # delay 2 seconds
+    if bet_type == 'single':
+        if roll == decision:
+            print('win')
+            win += 1
+        else:
+            print('lost')
+            lost += 1
+    else:
+        if roll in decision:
+            print('win')
+            win += 1
+        else:
+            print('lost')
+            lost += 1
+print('win', win)
+print('lost', lost)
+    # time.sleep(1) # delay 2 seconds

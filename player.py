@@ -5,15 +5,58 @@ from numba import jit
 
 @jit(nopython = True)
 def single():
-    '''Randomly pick a number from 0-36
+    '''Generate random number from 0-36
 
     Returns:
-        int: randomly picked number (0-36)
+        int: randomly generated number from 0-36
     '''
 
     bet_type = 'single'
 
     decision = random.randint(0, 36)
+
+    return bet_type, decision
+
+@jit(forceobj = True)
+def split():
+
+    bet_type = 'split'
+
+    number = random.randint(1, 35)
+    
+    if (number % 3 == 1 or number % 3 == 2) and number < 33:
+        choice = [number + 1, number + 3]
+        pair = random.choice(choice)
+        decision = [number, pair]
+    elif number % 3 == 0 and number <= 33:
+        decision = [number, number + 3]
+    elif number == 34:
+        decision = [number, number + 1]
+    elif number == 35:
+        decision = [number, number + 1]
+    return bet_type, decision
+
+@jit(forceobj = True)
+def street():
+
+    bet_type = 'street'
+
+    number = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]
+    choice = random.choice(number) # pick randomly from first column except 34
+
+    decision = list(range(choice, choice + 3)) # get number for street bet
+
+    return bet_type, decision
+
+@jit(forceobj = True)
+def corner():
+
+    bet_type = 'corner'
+
+    number = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28, 29, 31, 32]
+    choice = random.choice(number)
+
+    decision = [choice, choice + 1, choice + 3, choice + 4]
 
     return bet_type, decision
 
@@ -24,6 +67,18 @@ def basket():
 
     basket_array = [0, 1, 2, 3]
     decision = basket_array
+
+    return bet_type, decision
+
+@jit(forceobj = True)
+def double_street():
+
+    bet_type = 'double_street'
+
+    number = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31]
+    choice = random.choice(number) # pick randomly from first column except 34
+
+    decision = list(range(choice, choice + 6)) # get number for double street bet
 
     return bet_type, decision
 
@@ -50,7 +105,7 @@ def column():
 @jit(forceobj = True)
 def dozen():
 
-    bet_type = 'basket'
+    bet_type = 'dozen'
 
     result = random.randint(1, 3)
 
@@ -68,13 +123,17 @@ def odd_or_even():
 
     bet_type = 'odd_or_even'
 
-    number = random.randint(1, 100)
-    result = number % 2
+    number = list(range(1,37))
+    odd = number[1::2]
+    even = number[::2]
 
-    if result == 0:
-        decision = "even"
+    choice = ['odd', 'even']
+    result = random.choice(choice)
+
+    if result == 'even':
+        decision = even
     else:
-        decision = "odd"
+        decision = odd
     
     return bet_type, decision
 
@@ -116,7 +175,8 @@ def decide():
     '''Generate random bet decision for the player
 
     Returns:
-        int: If the decision is 0 to 36
+        string : type of bet it picked
+        int | list[int] : number(s) it picked
     '''
 
     # get the bet types randomly
@@ -125,15 +185,15 @@ def decide():
         case 0: # single
             bet_type, decision = single()
         case 1: # split
-            bet_type, decision = 'split', 'split'
+            bet_type, decision = split()
         case 2: # street
-            bet_type, decision = 'street', 'street'
+            bet_type, decision = street()
         case 3: # corner
-            bet_type, decision = 'corner', 'corner'
+            bet_type, decision = corner()
         case 4: # basket
             bet_type, decision = basket()
         case 5: # double_street
-            bet_type, decision = 'double_street', 'double_street'
+            bet_type, decision = double_street()
         case 6: # column
             bet_type, decision = column()
         case 7: # dozen
