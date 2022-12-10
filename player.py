@@ -171,7 +171,7 @@ def half():
     return bet_type, decision
 
 @jit(forceobj = True)
-def decide():
+def decide(tendency):
     '''Generate random bet decision for the player
 
     Returns:
@@ -180,7 +180,10 @@ def decide():
     '''
 
     # get the bet types randomly
-    number = random.randint(0, 10)
+    # TODO: choose depend on tendency
+    if tendency == 'random':
+        number = random.randint(0, 10)
+
     match number:
         case 0: # single
             bet_type, decision = single()
