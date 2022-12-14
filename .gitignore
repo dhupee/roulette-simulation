@@ -5,3 +5,7 @@
 /__pycache__
 
 /tmp
+
+/csv
+
+*.png

@@ -23,8 +23,8 @@ def split():
     bet_type = 'split'
 
     number = random.randint(1, 35)
-    
-    if (number % 3 == 1 or number % 3 == 2) and number < 33:
+
+    if number % 3 in [1, 2] and number < 33:
         choice = [number + 1, number + 3]
         pair = random.choice(choice)
         decision = [number, pair]
@@ -130,11 +130,7 @@ def odd_or_even():
     choice = ['odd', 'even']
     result = random.choice(choice)
 
-    if result == 'even':
-        decision = even
-    else:
-        decision = odd
-    
+    decision = even if result == 'even' else odd
     return bet_type, decision
 
 @jit(forceobj = True)
@@ -148,15 +144,11 @@ def red_or_black():
     red = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3]
     black = [15, 4, 2, 17, 6, 13, 11, 8, 10, 24, 33, 20, 31, 22, 29, 28, 35, 26]
 
-    if result == 0:
-        decision = red
-    else:
-        decision = black
-    
+    decision = red if result == 0 else black
     return bet_type, decision
 
 @jit(forceobj = True)
-def half():
+def half():  # sourcery skip: assign-if-exp
 
     bet_type = 'half'
 
@@ -181,8 +173,12 @@ def decide(tendency):
 
     # get the bet types randomly
     # TODO: choose depend on tendency
-    if tendency == 'random':
+    if tendency == 'random': # all random
         number = random.randint(0, 10)
+    elif tendency == 'dangerous': # only choose
+        number = 0
+    elif tendency == 'safe': # only choose safe bet
+        number = random.choice([6, 7, 8, 9, 10])
 
     match number:
         case 0: # single
