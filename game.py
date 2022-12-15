@@ -2,6 +2,7 @@ import random
 from player import decide
 import os
 import csv
+import statistics
 import matplotlib.pyplot as plt
 from numba import jit
 
@@ -21,6 +22,9 @@ def run_roulette(sessions, starter_money, rounds, bet_size, tendency, verbose):
 # create csv folder if doesn't exist
     if not os.path.exists('csv'):
         os.makedirs('csv')
+
+    avg_profit = []
+    avg_loss = []
 
     for i in range(sessions):
 
@@ -155,6 +159,9 @@ def run_roulette(sessions, starter_money, rounds, bet_size, tendency, verbose):
         print("house's money:", house_money)
         print('\n')
 
+        avg_profit.append(player_money)
+        avg_loss.append(house_money)
+
         # plot it
         plt.plot(lasted_rounds_list, player_money_list)
         plt.plot(lasted_rounds_list, house_money_list)
@@ -164,4 +171,7 @@ def run_roulette(sessions, starter_money, rounds, bet_size, tendency, verbose):
             writer.writerow(["Round", "Player's Money", "House's Money"])
             writer.writerows(results_list)
 
-    return lasted_rounds, win, lost, player_money, house_money
+    avg_profit = statistics.mean(avg_profit)
+    avg_loss = statistics.mean(avg_loss)
+
+    return lasted_rounds, win, lost, player_money, house_money, avg_profit, avg_loss
