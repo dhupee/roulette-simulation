@@ -172,7 +172,6 @@ def decide(tendency):
     '''
 
     # get the bet types randomly
-    # TODO: choose depend on tendency
     if tendency == 'random': # all random
         number = random.randint(0, 10)
     elif tendency == 'dangerous': # only choose

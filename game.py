@@ -118,7 +118,7 @@ def run_roulette(sessions, starter_money, rounds, bet_size, tendency, verbose):
                         print('lost')
             elif bet_type in ['column', 'dozen']: # payout 2 to 1
                 if roll in decision:
-                    payout = 5
+                    payout = 2
                     win += 1
                     player_money += bet_size*payout
                     house_money -= bet_size*payout
