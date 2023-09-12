@@ -34,6 +34,10 @@ options:
                         Tendency of player of betting choice
 
 ```
+## My conclusion
+
+from the simulation itself, the loss is usually more than the win but I have a bad way to count how much they win and how much they lose and I need to repair this in the future.
+but the logic behind the game itself is more or less correct, if anyone saw the flaws please tell me in the repo.
 
 ## bet-odds-table
 
